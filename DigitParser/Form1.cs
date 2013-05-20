@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace DigitParser
 
         private void WorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
         {
-            progressBar1.Value = progressChangedEventArgs.ProgressPercentage;//progressChangedEventArgs.ProgressPercentage;
+            progressBar1.Value = progressChangedEventArgs.ProgressPercentage;
         }
 
         private void WorkerOnDoWork(object sender, DoWorkEventArgs doWorkEventArgs)
@@ -59,7 +60,7 @@ namespace DigitParser
                         var old = val;
                         var f = (char) fs.Read();
                         int s;
-                        if (!int.TryParse(f.ToString(), out s)) continue;
+                        if (!int.TryParse(f.ToString(CultureInfo.InvariantCulture), out s)) continue;
 
                         val += f;
                         if (int.Parse(val) <= 255 && val.Length <= 3) continue;
@@ -68,14 +69,11 @@ namespace DigitParser
                         {
                             if (b == 32 || (b >= 48 && b <= 57) || (b >= 97 && b <= 122) || (b >= 65 && b <= 90))
                                 ws.WriteByte(b);
-                            
                         }
                         else
-                        {
                             ws.WriteByte(b);
-                            
-                        }
-                        val = f.ToString();
+
+                        val = f.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
