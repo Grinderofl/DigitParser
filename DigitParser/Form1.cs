@@ -24,6 +24,8 @@ namespace DigitParser
             _worker.DoWork += WorkerOnDoWork;
             _worker.ProgressChanged += WorkerOnProgressChanged;
             _worker.RunWorkerCompleted += WorkerOnRunWorkerCompleted;
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
         }
 
         private void WorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
@@ -54,7 +56,7 @@ namespace DigitParser
                         size--;
                         if (current > distance)
                         {
-                            _worker.ReportProgress((int) (size/orig*100));
+                            _worker.ReportProgress(100 - (int) ((double)size/orig*100));
                             current = 0;
                         }
                         var old = val;
